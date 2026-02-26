@@ -1,0 +1,47 @@
+from datetime import date
+
+from src.schemas.bookings import BookingAdd
+
+
+
+async def test_booking_crud(db):
+    user_id = (await db.users.get_all())[0].id
+    room_id = (await db.rooms.get_all())[0].id
+    update_date_from = date(year=2024, month=9, day= 10)
+    update_date_to = date(year=2024, month=9, day=20)
+    booking_data = BookingAdd(
+        user_id=user_id,
+        room_id=room_id,
+        date_from=date(year=2024, month=8, day= 10),
+        date_to=date(year=2024, month=8, day=20),
+        price=100
+    )
+    update_booking_data = BookingAdd(
+        user_id=user_id,
+        room_id=room_id,
+        date_from=update_date_from,
+        date_to=update_date_to,
+        price=200
+    )
+    new_booking = await db.bookings.add(booking_data)
+
+
+    booking = await db.bookings.get_one_or_none(id=new_booking.id)
+    assert booking
+    assert booking.id == new_booking.id
+    assert booking.user_id == new_booking.user_id
+    assert booking.room_id == new_booking.room_id
+
+
+    await db.bookings.edit(update_booking_data, id=new_booking.id)
+    updated_booking = await db.bookings.get_one_or_none(id=new_booking.id)
+    assert updated_booking.id == new_booking.id
+    assert update_booking_data.user_id == new_booking.user_id
+    assert update_booking_data.room_id == new_booking.room_id
+    assert update_booking_data.date_from == update_date_from
+    assert update_booking_data.date_to == update_date_to
+    assert update_booking_data.price == update_booking_data.price
+
+
+    result = await db.bookings.delete(id=new_booking.id)
+    assert not result
