@@ -13,7 +13,8 @@ def test_task():
     sleep(5)
     print("Я молодец")
 
-#@celery_instance.task
+
+# @celery_instance.task
 def resize_image(image_path: str):
     sizes = [i for i in range(10000, 100000, 1000)]
     output_folder = "src/static/images"
@@ -24,7 +25,9 @@ def resize_image(image_path: str):
     name, ext = os.path.splitext(base_name)
 
     for size in sizes:
-        img_resized = img.resize((size, int(img.height * (size / img.width))), Image.Resampling.LANCZOS)
+        img_resized = img.resize(
+            (size, int(img.height * (size / img.width))), Image.Resampling.LANCZOS
+        )
 
         new_file_name = f"{name}_{size}px{ext}"
 
@@ -45,4 +48,3 @@ async def get_bookings_with_today_checkin_helper():
 @celery_instance.task(name="booking_today_checkin")
 def send_emails_to_users_with_today_checkin():
     asyncio.run(get_bookings_with_today_checkin_helper())
-

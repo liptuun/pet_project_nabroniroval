@@ -10,5 +10,5 @@ async def test_create_facility(ac):
     assert response.status_code == 200
     res = response.json()
     assert isinstance(res, dict)
-    assert res ["data"]["title"] == facility_title
+    assert res["data"]["title"] == facility_title
     assert "data" in res

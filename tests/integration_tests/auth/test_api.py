@@ -10,34 +10,24 @@ async def delete_all_users():
         await _db.commit()
 
 
-
-@pytest.mark.parametrize("email, password", [
-    ("kot@pes.com", "1234"),
-    ("kot@kot.com", "1234"),
-    ("pes@pes.com", "1234"),
-])
+@pytest.mark.parametrize(
+    "email, password",
+    [
+        ("kot@pes.com", "1234"),
+        ("kot@kot.com", "1234"),
+        ("pes@pes.com", "1234"),
+    ],
+)
 async def test_authorization_flow(
-        email,
-        password,
-        delete_all_users,
-        ac,
+    email,
+    password,
+    delete_all_users,
+    ac,
 ):
-    resp_reg = await ac.post(
-        "/auth/register",
-        json={
-            "email": email,
-            "password": password
-        }
-    )
+    resp_reg = await ac.post("/auth/register", json={"email": email, "password": password})
     assert resp_reg.status_code == 200
 
-    resp_login = await ac.post(
-        "/auth/login",
-        json={
-            "email": email,
-            "password": password
-        }
-    )
+    resp_login = await ac.post("/auth/login", json={"email": email, "password": password})
     assert resp_login.status_code == 200
 
     resp_me = await ac.get("/auth/me")
@@ -54,7 +44,3 @@ async def test_authorization_flow(
 
     after_logout_response = await ac.get("/auth/me")
     assert after_logout_response.status_code == 401
-
-
-
-

@@ -8,9 +8,9 @@ from src.database import Base
 if typing.TYPE_CHECKING:
     from src.models import FacilitiesOrm
 
+
 class RoomsOrm(Base):
     __tablename__ = "rooms"
-
 
     id: Mapped[int] = mapped_column(primary_key=True)
     hotel_id: Mapped[int] = mapped_column(ForeignKey("hotels.id"))
