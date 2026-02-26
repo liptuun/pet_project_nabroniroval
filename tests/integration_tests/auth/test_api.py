@@ -1,4 +1,5 @@
 import pytest
+from httpx import AsyncClient
 
 from tests.conftest import get_db_null_pool
 
@@ -22,7 +23,7 @@ async def test_authorization_flow(
     email,
     password,
     delete_all_users,
-    ac,
+    ac: AsyncClient,
 ):
     resp_reg = await ac.post("/auth/register", json={"email": email, "password": password})
     assert resp_reg.status_code == 200

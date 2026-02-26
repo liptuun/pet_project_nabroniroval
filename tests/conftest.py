@@ -1,5 +1,6 @@
 # ruff: noqa: E402
 import json
+from typing import AsyncGenerator
 from unittest import mock
 
 
@@ -33,7 +34,7 @@ async def get_db_null_pool():
 
 
 @pytest.fixture(scope="function")
-async def db() -> DBManager:
+async def db() -> AsyncGenerator[DBManager, None]:
     async for db in get_db_null_pool():
         yield db
 
@@ -60,18 +61,18 @@ async def setup_database(check_test_mode):
 
 
 @pytest.fixture(scope="session")
-async def ac() -> AsyncClient:
+async def ac() -> AsyncGenerator[AsyncClient, None]:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def register_user(setup_database, ac):
+async def register_user(setup_database, ac: AsyncClient):
     await ac.post("/auth/register", json={"email": "kot@pes.com", "password": "1234"})
 
 
 @pytest.fixture(scope="session")
-async def authenticated_ac(register_user, ac):
+async def authenticated_ac(register_user, ac: AsyncClient):
     await ac.post("/auth/login", json={"email": "kot@pes.com", "password": "1234"})
     assert ac.cookies["access_token"]
     yield ac
