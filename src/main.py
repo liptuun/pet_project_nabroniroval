@@ -12,13 +12,13 @@ sys.path.append(str(Path(__file__).parent.parent))
 
 logging.basicConfig(level=logging.DEBUG)
 
+from src.init import redis_manager
 from src.api.hotels import router as router_hotels
 from src.api.auth import router as router_auth
 from src.api.rooms import router as router_rooms
 from src.api.bookings import router as router_bookings
 from src.api.facilities import router as router_facilities
 from src.api.images import router as router_images
-from src.init import redis_manager
 
 
 @asynccontextmanager

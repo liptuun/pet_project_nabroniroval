@@ -15,7 +15,7 @@ async def register_user(data: UserRequestAdd, db: DBDep):
     try:
         await db.users.add(new_user_data)
         await db.commit()
-    except ObjectAlreadyExistsException as ex:
+    except ObjectAlreadyExistsException:
         raise HTTPException(status_code=409, detail="Пользователь с такой почтой уже существует")
 
     return {"status": "OK"}

@@ -5,7 +5,11 @@ from fastapi_cache.decorator import cache
 
 
 from src.api.dependencies import PaginationDep, DBDep
-from src.exceptions import ObjectNotFoundException, check_date_to_after_date_from, HotelNotFoundHTTPException
+from src.exceptions import (
+    ObjectNotFoundException,
+    check_date_to_after_date_from,
+    HotelNotFoundHTTPException,
+)
 from src.schemas.hotels import HotelPatch, HotelAdd
 
 router = APIRouter(prefix="/hotels", tags=["Отели"])
