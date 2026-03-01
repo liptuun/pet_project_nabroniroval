@@ -14,7 +14,7 @@ def test_task():
     sleep(5)
 
 
-# @celery_instance.task
+@celery_instance.task
 def resize_image(image_path: str):
     logging.debug(f"Вызывается функция image_path с {image_path=} ")
     sizes = [i for i in range(10000, 100000, 1000)]
