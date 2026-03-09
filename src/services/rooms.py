@@ -12,6 +12,9 @@ from src.services.hotels import HotelService
 
 
 class RoomService(BaseService):
+    async def get_without_filters(self):
+        return await self.db.rooms.get_all()
+
     async def get_filtered_by_time(
         self,
         hotel_id: int,
@@ -37,6 +40,7 @@ class RoomService(BaseService):
         if rooms_facilities_data:
             await self.db.rooms_facilities.add_bulk(rooms_facilities_data)
         await self.db.commit()
+        return room
 
     async def edit_room(self, hotel_id: int, room_id: int, room_data: RoomAddRequest):
         await HotelService(self.db).get_hotel_with_check(hotel_id)

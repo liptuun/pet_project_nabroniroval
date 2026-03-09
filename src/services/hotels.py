@@ -10,6 +10,9 @@ from src.services.base import BaseService
 
 
 class HotelService(BaseService):
+    async def get_without_filters(self):
+        return await self.db.hotels.get_all()
+
     async def get_filtered_by_time(
         self,
         pagination,
@@ -29,7 +32,7 @@ class HotelService(BaseService):
         )
 
     async def get_hotel(self, hotel_id: int):
-        return self.db.hotels.get_one(id=hotel_id)
+        return await self.db.hotels.get_one(id=hotel_id)
 
     async def add_hotel(self, data: HotelAdd):
         hotel = await self.db.hotels.add(data)
