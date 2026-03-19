@@ -7,9 +7,8 @@ from src.config import settings
 from src.exceptions import (
     ObjectAlreadyExistsException,
     IncorrectTokenException,
-    EmailAlreadyExistsException,
     EmailNotFoundException,
-    IncorrectPasswordException,
+    IncorrectPasswordException, UserAlreadyExistsException,
 )
 from src.schemas.users import UserRequestAdd, UserAdd
 from src.services.base import BaseService
@@ -48,7 +47,7 @@ class AuthService(BaseService):
             await self.db.users.add(new_user_data)
             await self.db.commit()
         except ObjectAlreadyExistsException as ex:
-            raise EmailAlreadyExistsException from ex
+            raise UserAlreadyExistsException from ex
 
     async def login_user(self, data: UserRequestAdd) -> str:
         user = await self.db.users.get_user_with_hashed_password(email=data.email)
