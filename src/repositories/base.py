@@ -61,7 +61,6 @@ class BaseRepository:
                 )
                 raise ex
 
-
     async def add_bulk(self, data: Sequence[BaseModel]):
         add_data_stmt = insert(self.model).values([item.model_dump() for item in data])
         await self.session.execute(add_data_stmt)

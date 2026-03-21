@@ -8,7 +8,8 @@ from src.exceptions import (
     ObjectAlreadyExistsException,
     IncorrectTokenException,
     EmailNotFoundException,
-    IncorrectPasswordException, UserAlreadyExistsException,
+    IncorrectPasswordException,
+    UserAlreadyExistsException,
 )
 from src.schemas.users import UserRequestAdd, UserAdd
 from src.services.base import BaseService
