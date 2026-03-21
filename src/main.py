@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 import uvicorn
@@ -40,6 +41,7 @@ app.include_router(router_rooms)
 app.include_router(router_bookings)
 app.include_router(router_facilities)
 app.include_router(router_images)
+app.add_middleware(CORSMiddleware, allow_origins=["*"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", reload=True)
